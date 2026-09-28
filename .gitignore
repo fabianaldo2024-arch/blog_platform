@@ -43,4 +43,4 @@ pgdata/
 logs/
 .pytest_cache/
 .coverage
-htmlcov/
+htmlcov/*.db
