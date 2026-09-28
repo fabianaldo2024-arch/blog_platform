@@ -1,5 +1,12 @@
 # 🚀 Blog Platform — FastAPI, PostgreSQL & Docker
 
+## 🟢 Demo en vivo
+**App:** https://blog-platform-m5fx.onrender.com
+**API Docs (Swagger):** https://blog-platform-m5fx.onrender.com/docs
+
+> ⚠️ Nota: corre en plan gratuito de Render — si está inactiva, el primer request puede tardar ~50 segundos en responder mientras el servicio "despierta".
+
+
 [ES] Plataforma web profesional para gestión de blogs y servicios, desarrollada con FastAPI, PostgreSQL, Alembic y Docker en Linux Mint.  
 [EN] Robust web platform built with FastAPI, PostgreSQL, Alembic, and Docker on Linux Mint.
 
