@@ -11,15 +11,42 @@
 <body class="bg-light">
     <nav class="navbar navbar-expand navbar-light bg-white shadow-sm px-4">
         <a href="/" class="navbar-brand">🚀 Blog Platform</a>
-        <div class="ms-auto">
+        <div class="ms-auto d-flex align-items-center gap-2">
             <a href="/" class="btn btn-link">Inicio</a>
-            <a href="/login" class="btn btn-link">Login</a>
-            <a href="/register" class="btn btn-link">Registro</a>
+            <a href="/login" id="nav-login" class="btn btn-link">Login</a>
+            <a href="/register" id="nav-register" class="btn btn-link">Registro</a>
             <a href="/posts/create" class="btn btn-primary btn-sm">Nueva publicación</a>
+            <button id="nav-logout" class="btn btn-outline-secondary btn-sm d-none">Salir</button>
         </div>
     </nav>
     <main class="container py-5">
         {% block content %}{% endblock %}
     </main>
+
+    <script>
+        function updateNavAuthState() {
+            const token = localStorage.getItem("access_token");
+            const loginLink = document.getElementById("nav-login");
+            const registerLink = document.getElementById("nav-register");
+            const logoutBtn = document.getElementById("nav-logout");
+            if (token) {
+                loginLink.classList.add("d-none");
+                registerLink.classList.add("d-none");
+                logoutBtn.classList.remove("d-none");
+            } else {
+                loginLink.classList.remove("d-none");
+                registerLink.classList.remove("d-none");
+                logoutBtn.classList.add("d-none");
+            }
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            updateNavAuthState();
+            document.getElementById("nav-logout").addEventListener("click", () => {
+                localStorage.removeItem("access_token");
+                window.location.href = "/";
+            });
+        });
+    </script>
+    {% block scripts %}{% endblock %}
 </body>
 </html>
