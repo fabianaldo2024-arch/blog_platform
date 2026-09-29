@@ -17,7 +17,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 # Importar la Base de SQLAlchemy y los modelos para registrarlos
 from app.db.base import Base  # Ajusta según la ubicación de tu Base
-from app.models.post import Post  # Importación explícita del modelo Post
+from app.db.models import User, Post, Comment  # Importa todos los modelos para que Alembic los detecte
 
 # Asignar los metadatos de los modelos
 target_metadata = Base.metadata

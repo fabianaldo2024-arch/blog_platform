@@ -1,5 +1,6 @@
 from pathlib import Path
-from fastapi import APIRouter, Request, Depends, Form, HTTPException, status
+
+from fastapi import APIRouter, Depends, Request, Form, HTTPException, status
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -7,12 +8,10 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.db.models import Comment, Post
 
-router = APIRouter(tags=["Vistas SSR / Salubridad"])
+router = APIRouter(tags=["Vistas SSR / HTMX"])
 
-# Resolución de ruta absoluta hacia el directorio templates/ raíz del proyecto
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / "templates"
-
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
 
@@ -22,11 +21,27 @@ def health_check():
 
 
 @router.get("/", response_class=HTMLResponse)
-def home(request: Request, db: Session = Depends(get_db)):
-    posts = db.query(Post).all()
+def home_page(request: Request, db: Session = Depends(get_db)):
+    """Página principal: lista de publicaciones."""
+    posts = db.query(Post).order_by(Post.created_at.desc()).limit(20).all()
     return templates.TemplateResponse(
-        request=request, name="index.html", context={"posts": posts}
+        request=request, name="pages/index.html", context={"posts": posts}
     )
+
+
+@router.get("/login", response_class=HTMLResponse)
+def login_page(request: Request):
+    return templates.TemplateResponse(request=request, name="pages/login.html")
+
+
+@router.get("/register", response_class=HTMLResponse)
+def register_page(request: Request):
+    return templates.TemplateResponse(request=request, name="pages/register.html")
+
+
+@router.get("/posts/create", response_class=HTMLResponse)
+def create_post_page(request: Request):
+    return templates.TemplateResponse(request=request, name="pages/create_post.html")
 
 
 @router.post("/posts/{post_id}/comments/htmx", response_class=HTMLResponse)
