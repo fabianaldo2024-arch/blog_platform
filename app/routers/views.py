@@ -68,3 +68,13 @@ def add_comment_htmx(
         name="partials/comment_card.html",
         context={"comment": new_comment},
     )
+
+
+@router.get("/posts/{post_id}", response_class=HTMLResponse)
+def post_detail_page(post_id: int, request: Request, db: Session = Depends(get_db)):
+    post = db.query(Post).filter(Post.id == post_id).first()
+    if not post:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Publicación no encontrada")
+    return templates.TemplateResponse(
+        request=request, name="pages/post_detail.html", context={"post": post}
+    )

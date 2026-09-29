@@ -1,0 +1,29 @@
+{% extends "components/base.html" %}
+{% block title %}{{ post.title }} — Blog Platform{% endblock %}
+{% block content %}
+<article class="mb-5">
+    <h1>{{ post.title }}</h1>
+    <p class="text-muted">{{ post.created_at.strftime("%d/%m/%Y") }}</p>
+    <p style="white-space: pre-wrap;">{{ post.content }}</p>
+</article>
+
+<hr>
+<h4 class="mb-3">Comentarios</h4>
+<div id="comments-list">
+    {% for comment in post.comments %}
+        {% include "partials/comment_card.html" %}
+    {% else %}
+        <p class="text-muted">Sé el primero en comentar.</p>
+    {% endfor %}
+</div>
+
+<form hx-post="/posts/{{ post.id }}/comments/htmx" hx-target="#comments-list" hx-swap="beforeend" class="col-md-6 mt-4">
+    <div class="mb-2">
+        <input type="text" name="author_name" class="form-control" placeholder="Tu nombre" required>
+    </div>
+    <div class="mb-2">
+        <textarea name="content" class="form-control" placeholder="Escribí un comentario..." required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm">Comentar</button>
+</form>
+{% endblock %}
